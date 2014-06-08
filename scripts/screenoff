@@ -1,0 +1,12 @@
+#!/bin/bash
+
+state="$(xinput --list-props 9 | grep "Device Enabled")"
+state="${state: -1}"
+sleep .2
+if [ "$state" == "1" ]
+then
+  xinput --disable 9
+  xset dpms force off
+else
+  xinput --enable 9
+fi

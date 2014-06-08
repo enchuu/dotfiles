@@ -1,0 +1,68 @@
+#!/usr/bin/env python2
+
+import subprocess
+import time
+import requests
+from sys import argv
+
+# Inspired by https://github.com/wahpomf/POMF, some new featuers added
+
+# Requirements:
+# python2
+# python-requests
+# scrot if you want to take screenshots
+# xclip if you want the link to be copied in your clipboard
+# some sort of notifications if you want notifications
+
+# Options:
+# -u: specify a file to upload
+# -s: take a screenshot of an area
+# -f: take a screenshot of the entire screen
+# -c: upload a custom location defined in custom_place (this by default the newest file in the screenshots directory)
+
+# Source code options:
+# home: the home directory
+# directory: the directory to store scrot screenshots
+# notify/clipboard: whether to notify/copy link in clipboard
+# notify_string/filename/custom_place: 0 argument functions that give strings about stuff
+# site/script: change this along with other stuff if you want to use something other than pomf.se
+
+home = '/home/t/'
+directory = home + 'screenshots/'
+clipboard = True
+notify = True
+notify_string = lambda url: 'file uploaded! \n' + url
+filename = lambda : str(int(time.time()))
+custom_place = lambda : directory + subprocess.check_output(['ls', '-t1', directory]).split('\n')[0]
+site = 'http://a.pomf.se/'
+script = 'http://pomf.se/upload.php'
+
+
+def main():
+    if (len(argv) < 2):
+        print(" Incorrect option choice. \n-u: uploads a file \n-s: takes a screenshot and uploads it \n-f: takes a fullscreen screenshot and uploads it")
+        return
+    opt = argv[1]
+    if (not opt in ['-u', '-s', '-f', '-c']):
+        print("Incorrect option choice. \n-u: uploads a file \n-s: takes a screenshot and uploads it \n-f: takes a fullscreen screenshot and uploads it")
+        return
+    elif (opt == '-u'):
+        image_path = argv[2]
+    elif (opt == '-s' or opt == '-f'):
+        image_path = directory + filename() + '.png'
+        p = subprocess.Popen(['scrot'] + (['--select'] if opt == '-s' else []) + [image_path])
+        p.wait()
+    elif (opt == '-c'):
+        image_path = custom_place()
+    upload = requests.post(url=script, files={'files[]':open(image_path, 'rb')})
+    url = site + upload.text.split('"')[17]
+    print(notify_string(url))
+    if (notify):
+        p = subprocess.Popen(['notify-send', notify_string(url)])
+    if (clipboard):
+        p = subprocess.Popen(['xclip', '-selection', 'c'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        p.stdin.write(url)
+
+
+if __name__ == '__main__':
+    main()

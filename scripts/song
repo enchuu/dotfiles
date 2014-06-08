@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ $(mocp -Q "%state") == "PLAY" ]
+then
+  echo $(mocp -Q "%artist: %song")
+else
+  echo ""
+fi

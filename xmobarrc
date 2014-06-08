@@ -1,0 +1,14 @@
+Config 
+  { font = "xft:TakaoPGothic:size=9:bold:antialias=true"  
+  , bgColor = "#20202e"  
+  , fgColor = "#b5a799"
+  , position = Static { xpos = 0 , ypos = 4, width = 1920, height = 16 }  
+  , commands = 
+    [ Run Date "%a %b %d %R" "date" 100
+    , Run Com "/home/t/.xmonad/scripts/song" [] "song" 10
+    , Run UnsafeStdinReader  
+    ]  
+  , sepChar = "%"  
+  , alignSep = "}{"  
+  , template = "  %UnsafeStdinReader%}{%song%  %date% "
+  }
