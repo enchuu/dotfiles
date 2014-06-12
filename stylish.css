@@ -1,0 +1,50 @@
+@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
+#urlbar-container { 
+ max-width: 300px !important;
+ background-image: none !important;
+}
+
+#TabsToolbar {
+ height: 26px !important;
+ background-image: none !important;
+}
+
+.tabbrowser-tab, tabs#tabbrowser-tabs *{
+ margin-top: 0;
+ margin-right: 0;
+ margin-bottom: 0;
+ padding: 0px 0px;
+ border-width: 0px;
+ border-bottom-width: 2px;
+ border-radius: 0;
+ background: transparent;
+}
+
+.tabbrowser-tab .tab-text {
+ text-align: center;
+ color: #626262 !important;
+ border-bottom: solid rgba(255,0,0,0.0);
+}
+
+#main-window .tabbrowser-tab[selected] .tab-text{
+ border-bottom: solid #00A4D1;
+}
+
+.tabbrowser-tab .tab-icon-image, .tab-throbber, .tab-close-button {
+ display: none  !important;
+}
+
+.scrollbutton-up,
+.scrollbutton-down {
+ display: none !important;
+}
+
+.autocomplete-history-dropmarker.urlbar-history-dropmarker {
+ display: none !important;
+}
+
+#urlbar{
+ background:transparent !important;
+ border:0px solid #000000 !important;
+}
